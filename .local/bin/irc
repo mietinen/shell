@@ -1,0 +1,15 @@
+#!/bin/sh
+# Start/attach tmux with irssi
+
+session="IRC"
+network="liberachat"
+
+tmux has-session -t "$session" 2>/dev/null
+if [ $? != 0 ]; then
+    # tmux new -s "$session" irssi -c "$network"
+    tmux new -s "$session" weechat
+else
+    tmux a -t "$session"
+fi
+
+# vim: set ts=4 sw=4 tw=0 et :

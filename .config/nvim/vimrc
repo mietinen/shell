@@ -1,0 +1,21 @@
+" Neovim config for VIM, "legacy" support
+if ! has('nvim')
+    " Create data directories 
+    if ! isdirectory(system('echo -n ${XDG_DATA_HOME:-$HOME/.local/share}').'/vim/swap')
+        silent !mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"/vim/{undo,swap,backup,view}
+    endif
+    " Set data directories
+    let &undodir = system('echo -n ${XDG_DATA_HOME:-$HOME/.local/share}').'/vim/undo'
+    let &directory = system('echo -n ${XDG_DATA_HOME:-$HOME/.local/share}').'/vim/swap'
+    let &backupdir = system('echo -n ${XDG_DATA_HOME:-$HOME/.local/share}').'/vim/backup'
+    let &viewdir = system('echo -n ${XDG_DATA_HOME:-$HOME/.local/share}').'/vim/view'
+    " Neovim runtimepath
+    execute 'set runtimepath='.expand('<sfile>:p:h')
+    set runtimepath+=$VIMRUNTIME
+    execute 'set runtimepath+='.expand('<sfile>:p:h').'/after'
+endif
+
+" Load Neovim config
+execute 'source' expand('<sfile>:p:h').'/init.vim'
+
+" vim: set ts=4 sw=4 tw=78 et :

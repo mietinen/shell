@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Set colorful PS1
+__ps1() {
+    # default colors
+    if test -n "${ZSH_VERSION}"; then
+        local cr="%B%F{red}" cg="%B%F{green}" cy="%B%F{yellow}"
+        local cb="%B%F{blue}" cm="%B%F{magenta}" cc="%B%F{cyan}"
+        local cw="%B%F{white}" reset="%f%b"
+        local u='%n' h='%m' w='%~' p='%#' nl=$'\n'
+    else
+        local cr='\[\033[01;31m\]' cg='\[\033[01;32m\]' cy='\[\033[01;33m\]'
+        local cb='\[\033[01;34m\]' cm='\[\033[01;35m\]' cc='\[\033[01;36m\]'
+        local cw='\[\033[01;37m\]' reset='\[\033[00m\]'
+        local u='\u' h='\h' w='\w' p='\$' nl='\n'
+    fi
+    # root/user
+    if [ $EUID -eq 0 ]; then
+        local user="$cr$u$cg"
+        local prompt="$cr$p$cg"
+    else
+        local user="$u"
+        local prompt="$p"
+    fi
+    # ssh/local hostname
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [[ "$(ps -o comm= -p $PPID)" =~ sshd ]]; then
+        local host="$cy$h$cg"
+    else
+        local host="$h"
+    fi
+    # path
+    local path="$cc$w$cg"
+    # git
+    local git="$cm\$(git branch --show-current 2>/dev/null | sed 's/\(.*\)/ (\1)/')$cg"
+    # PS1
+    # echo "$cg┌[$user@$host $path$git]$nl$cg└─╼ $reset"
+    echo "$cg┌[$user@$host $path$git]$nl$cg└─$prompt $reset"
+}
+
+PS1="$(__ps1)"
+
+# vim: set ts=4 sw=4 tw=0 et :

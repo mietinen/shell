@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# XDG user dirs
+. "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" 2>/dev/null
+
+# Directories (cd and nnn)
+bm_dirs=$(cat <<EOF
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/archer
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/aur
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/tabs
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/virtui
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/snippets
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/code/www
+${XDG_DOCUMENTS_DIR:-$HOME/Documents}/vimwiki
+${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
+${XDG_MUSIC_DIR:-$HOME/Music}
+${XDG_PICTURES_DIR:-$HOME/Pictures}
+${XDG_PICTURES_DIR:-$HOME/Pictures}/scrot
+${XDG_PICTURES_DIR:-$HOME/Pictures}/wallpapers
+${XDG_VIDEOS_DIR:-$HOME/Videos}
+${XDG_CONFIG_HOME:-$HOME/.config}
+${XDG_CONFIG_HOME:-$HOME/.config}/awesome/widgets
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim
+${XDG_CONFIG_HOME:-$HOME/.config}/xrdbthemes
+$HOME/.local/bin
+$HOME/.local/bin/desktop
+/run/media/$(whoami)
+/run/user/$(id -u)/gvfs
+EOF
+)
+
+# Config files (opens with $EDITOR/sensible-editor)
+bm_files=$(cat <<EOF
+${XDG_CONFIG_HOME:-$HOME/.config}/awesome/rc.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/fontconfig/fonts.conf
+${XDG_CONFIG_HOME:-$HOME/.config}/mimeapps.list
+${XDG_CONFIG_HOME:-$HOME/.config}/networkmanager-dmenu/config.ini
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.vim
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim/lua/myownstuff/init.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim/vimrc
+${XDG_CONFIG_HOME:-$HOME/.config}/picom/picom.conf
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/.zshrc
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/bashrc
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/bookmarks
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/profile
+${XDG_CONFIG_HOME:-$HOME/.config}/shell/promptrc
+${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf
+${XDG_CONFIG_HOME:-$HOME/.config}/x11/Xresources
+${XDG_CONFIG_HOME:-$HOME/.config}/x11/xinitrc
+${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile
+EOF
+)
+
+# vim: set ts=4 sw=4 tw=0 et :

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Installed kernel in /boot
+ondisk="$(file /boot/vmlinuz* | sed 's/.*version \([^ ]*\)[ ]*.*/\1/')"
+# Current kernel running
+current="$(uname -r)"
+
+if [ "$ondisk" = "$current" ] ; then
+    echo "Current kernel is up to date: $current"
+    echo "No reboot required"
+else
+    echo "Current kernel: $current"
+    echo "Installed kernel: $ondisk"
+    echo "Reboot required"
+fi
+
+# vim: set ts=4 sw=4 tw=0 et :

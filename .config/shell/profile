@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# ~/.profile
+#
+
+# Location, for weather block
+export LOCATION="hammerfest"
+
+# Adds `~/.local/bin` to $PATH
+PATH="$PATH:$(find "$HOME/.local/bin" -type d 2>/dev/null | paste -sd ':')"
+export PATH
+
+# Default programs
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TERMINAL="urxvt"
+export BROWSER="firefox"
+
+# Neovim config for VIM, "legacy" support
+command -v nvim >/dev/null || export VIMINIT="source ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/vimrc"
+
+# LS_COLORS (fix unreadable blue on green)
+export LS_COLORS="ow=30;42"
+
+# Misc
+. "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bookmarks" 2>/dev/null
+i=97 NNN_BMS=""
+for f in $bm_dirs; do
+    NNN_BMS="$NNN_BMS$(printf "\\$(printf %o $i)\n"):$f;"
+    i=$((i+1))
+    [ $i -gt 122 ] && break
+done
+export NNN_BMS
+export NNN_COLORS="2346"
+export NNN_TRASH=1
+[ -d "$XDG_RUNTIME_DIR" ] && export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
+export LESSHISTFILE="-"
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+# SSH AGENT
+if [ -n "$TTY" ] && [ -z "$SSH_AUTH_SOCK" ] && command -v ssh-agent >/dev/null; then
+    eval $(ssh-agent -s) >/dev/null
+    trap 'kill $SSH_AGENT_PID' EXIT
+fi
+
+# Source bashrc
+[ "$BASH" ] && . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bashrc" 2>/dev/null
+
+# vim: set ts=4 sw=4 tw=0 et :

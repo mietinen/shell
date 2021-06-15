@@ -1,0 +1,8 @@
+.dotfiles
+.cargo
+.cache
+.mozilla
+.npm
+*-errors
+*_history
+.ICAClient

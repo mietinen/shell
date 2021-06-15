@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "Usage: $(basename "$0") [-c] <file>"
+    echo "   -c: Create new directory for extraction"
+}
+
+while getopts ":hc" opt; do
+    case ${opt} in
+        c) create=true ;;
+        *) usage ; exit 1;;
+    esac
+done
+
+[ -n "$create" ] && shift
+
+file="$(realpath "$1")"
+[ ! -f "$file" ] && echo "'$1' is not a valid file" && exit 1
+
+if [ -n "$create" ] ; then
+    dir="$(echo "${file%.*}" | sed 's/\.tar$//gI')"
+    mkdir "$dir" || exit 1
+    cd "$dir" || exit 1
+fi
+
+case "${file,,}" in
+    *.tar.bz2)  tar jxvf "$file" ;;
+    *.tar.gz)   tar zxvf "$file" ;;
+    *.tar.xz)   tar Jxvf "$file" ;;
+    *.tbz2)     tar jxvf "$file" ;;
+    *.tgz)      tar zxvf "$file" ;;
+    *.tar.*)    tar xvf "$file" ;;
+    *.tar)      tar xvf "$file" ;;
+    *.bz2)      bunzip2 -v "$file" ;;
+    *.rar)      unrar x "$file" ;;
+    *.gz)       gunzip -v "$file" ;;
+    *.zip)      unzip "$file" ;;
+    *.Z)        uncompress -v "$file" ;;
+    *.7z)       7z x "$file" ;;
+    *)          echo "'$file' cannot be extracted via $(basename "$0")" ;;
+esac
+
+# vim: set ts=4 sw=4 tw=0 et :

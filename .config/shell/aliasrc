@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+# Use neovim > vim > vi
+command -v nvim >/dev/null && alias vim='nvim' vimdiff='nvim -d'
+command -v vim >/dev/null && alias vi='vim'
+
+# Dotfiles
+alias   sgit='git --git-dir="$HOME/.dotfiles/shell" --work-tree="$HOME"' \
+        dgit='git --git-dir="$HOME/.dotfiles/desktop" --work-tree="$HOME"'
+
+alias   slazygit='lazygit --git-dir="$HOME/.dotfiles/shell" --work-tree="$HOME"' \
+        dlazygit='lazygit --git-dir="$HOME/.dotfiles/desktop" --work-tree="$HOME"'
+
+# Package stuff
+alias   pactable='expac -Q -H M --timefmt="%Y-%m-%d %T" "%l  %-12w  %-15m  %n"' \
+        pacdate='pactable | sort -n' \
+        pacsize='pactable | sort -hk 4' \
+        pacdep='expac -Q "%-25n\t%D"' \
+        pacclean='sudo pacman -Rnsu $(pacman -Qtdq)' \
+        updmirror='reflector -c no,se,dk,fi,de,nl,be,fr,pl,au,gb -p http,https --sort country | sudo tee /etc/pacman.d/mirrorlist'
+
+# Add colors
+alias   ls='ls -hN --color=auto --group-directories-first' \
+        grep='grep --colour=auto' \
+        egrep='egrep --colour=auto' \
+        fgrep='fgrep --colour=auto' \
+        diff='diff --color=auto' \
+
+# Stuff
+alias   cp='cp -i' \
+        df='df -h' \
+        du='du -h' \
+        more='less' \
+        sudovimdiff='SUDO_EDITOR=vimdiff sudoedit' \
+        ssh='TERM=xterm ssh' \
+        vimwiki='vim -c VimwikiIndex' \
+        wget='curl -OJLR' \
+        nettfart='speedtest -s 15006' \
+        startx='startx ~/.xinitrc' \
+        nnn='nnn -de' \
+        n='n -de'
+
+# Directories and config shortcuts
+# From variables in bookmarks file
+cdf() {
+    . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bookmarks" 2>/dev/null
+    sel=$(for b in $(echo "$bm_dirs") ; do [ -d "$b" ] && echo "$b" ; done | fzy)
+    [ -d "$sel" ] && cd "$sel"
+}
+cff() {
+    . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bookmarks" 2>/dev/null
+    sel=$(for b in $(echo "$bm_files") ; do [ -r "$b" ] && echo "$b" ; done | fzy)
+    [ -r "$sel" ] && sensible-editor "$sel"
+}
+
+# vim: set ts=4 sw=4 tw=0 et :
