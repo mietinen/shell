@@ -1,0 +1,19 @@
+#!/bin/sh
+# Start/switch/attach tmux in a project directory
+# Source file directory/.dmuxrc if it exists
+
+sel="$1"
+if [ -z "$sel" ]; then
+    . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bookmarks" 2>/dev/null
+    sel=$(for b in $bm_dirs ; do [ -d "$b" ] && echo "$b" ; done | fzy)
+fi
+[ -d "$sel" ] || exit 0
+
+dir="$(readlink -f "$sel")"
+session="$(basename "$dir")"
+
+tmux new -c "$dir" -As "$session" \; source-file -q "$dir/.dmuxrc" 2>/dev/null && exit 0
+tmux new -c "$dir" -ds "$session" 2>/dev/null
+tmux switchc -t "$session" 2>/dev/null
+
+# vim: set ts=4 sw=4 tw=0 et :

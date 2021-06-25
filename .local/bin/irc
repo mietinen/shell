@@ -1,15 +1,11 @@
 #!/bin/sh
-# Start/attach tmux with irssi
+# Start/switch/attach tmux with irc client
 
 session="IRC"
-network="liberachat"
+command="weechat"
 
-tmux has-session -t "$session" 2>/dev/null
-if [ $? != 0 ]; then
-    # tmux new -s "$session" irssi -c "$network"
-    tmux new -s "$session" weechat
-else
-    tmux a -t "$session"
-fi
+tmux new -As "$session" $command 2>/dev/null && exit 0
+tmux new -ds "$session" $command 2>/dev/null
+tmux switchc -t "$session" 2>/dev/null
 
 # vim: set ts=4 sw=4 tw=0 et :
